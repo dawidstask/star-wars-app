@@ -7,6 +7,13 @@
       <p>producer: {{ film.producer }}</p>
       <p>release date: {{ film.release_date }}</p>
       <p>opening crawl: {{ film.opening_crawl }}</p>
+
+      <br>
+      <p>Did you like the movie?</p>
+      <textarea v-model="review" placeholder="Leave a review..." rows="4" cols="50"></textarea>
+      <p>
+        <button @click="submitReview()">Submit</button>
+      </p>
     </div>
     <p v-if="loading">Loading...</p>
   </div>
@@ -19,11 +26,13 @@ export default {
     return {
       film: null,
       loading: false,
+      review: '',
+      movieId: this.$route.params.id,
     };
   },
   mounted() {
     this.loading = true;
-    this.$axios.get(`https://swapi.co/api/films/${this.$route.params.id}`)
+    this.$axios.get(`https://swapi.co/api/films/${this.movieId}`)
       .then((res) => {
         this.film = res.data;
         console.log(this.film);
@@ -33,6 +42,17 @@ export default {
         console.error(error);
         this.loading = false;
       });
+  },
+  methods: {
+    submitReview() {
+      this.$store.commit(
+        'addReview',
+        {
+          movieId: this.movieId,
+          value: this.review,
+        },
+      );
+    },
   },
 };
 </script>
