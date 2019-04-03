@@ -1,13 +1,19 @@
 <template>
-  <div class="movie">
-    <h1>This is a movie page</h1>
-    <div v-if="film">
-      <p>title: {{ film.title }}</p>
-      <p>director: {{ film.director }}</p>
-      <p>producer: {{ film.producer }}</p>
-      <p>release date: {{ film.release_date }}</p>
-      <p>opening crawl: {{ film.opening_crawl }}</p>
+  <div>
+    <el-card class="box-card" v-if="!loading">
+      <div slot="header" class="clearfix">
+        <span>This is a movie page</span>
+      </div>
+      <div v-if="film">
+        <p>Title: <i>{{ film.title }}</i></p>
+        <p>Director: <i>{{ film.director }}</i></p>
+        <p>Producer: <i>{{ film.producer }}</i></p>
+        <p>Release date: <i>{{ film.release_date }}</i></p>
+        <p>Opening crawl: <i>{{ film.opening_crawl }}</i></p>
+      </div>
+    </el-card>
 
+    <template v-if="film">
       <br>
       <p>Did you like the movie?</p>
       <el-input
@@ -19,13 +25,13 @@
       <p>
         <el-button @click="submitReview()">Submit</el-button>
       </p>
-    </div>
+    </template>
+
     <p v-if="loading">Loading...</p>
   </div>
 </template>
 
 <script>
-
 export default {
   name: 'Movie',
   data() {
@@ -38,14 +44,18 @@ export default {
   },
   mounted() {
     this.loading = true;
+    // TODO: reduce calling api by taking it from store
     this.$axios.get(`https://swapi.co/api/films/${this.movieId}`)
       .then((res) => {
         this.film = res.data;
-        console.log(this.film);
         this.loading = false;
       })
       .catch((error) => {
-        console.error(error);
+        this.$notify.error({
+          title: 'Error',
+          message: error,
+          type: 'error',
+        });
         this.loading = false;
       });
   },
@@ -74,3 +84,8 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+  .box-card p {
+    text-align: left;
+  }
+</style>

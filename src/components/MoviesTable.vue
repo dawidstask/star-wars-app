@@ -1,36 +1,39 @@
 <template>
   <div>
-    <template v-if="films">
-      <el-input
-        v-model="search"
-        size="mini"
-        placeholder="Type to search"/>
+    <el-input
+      v-if="!loading && filterData"
+      v-model="search"
+      size="mini"
+      placeholder="Type to search"/>
 
-      <el-table
-        :data="filterData"
-        highlight-current-row
-        @current-change="redirectToMovie">
-        <el-table-column
-          prop="title"
-          label="Title"
-          sortable>
-        </el-table-column>
-        <el-table-column
-          prop="director"
-          label="Director"
-          sortable>
-        </el-table-column>
-        <el-table-column
-          label="Actions">
-          Show more info
-        </el-table-column>
-      </el-table>
-    </template>
-    <p v-if="loading">Loading...</p>
+    <el-table
+      v-loading="loading"
+      :data="filterData"
+      highlight-current-row
+      @current-change="redirectToMovie">
+      <el-table-column
+        prop="title"
+        label="Title"
+        sortable>
+      </el-table-column>
+      <el-table-column
+        prop="director"
+        label="Director"
+        sortable>
+      </el-table-column>
+      <el-table-column
+        label="Actions">
+        Show more info
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 
 <script>
+function checkIfIncludes(value, search) {
+  return value.toLowerCase().includes(search.toLowerCase());
+}
+
 export default {
   name: 'MoviesTable',
   data() {
@@ -41,7 +44,7 @@ export default {
     };
   },
   computed: {
-    filterData: ({ films, checkIfIncludes, search }) => {
+    filterData: ({ films, search }) => {
       if (!films) {
         return null;
       }
@@ -56,11 +59,14 @@ export default {
     this.$axios.get('https://swapi.co/api/films')
       .then((res) => {
         this.films = res.data.results;
-        console.log(this.films);
         this.loading = false;
       })
       .catch((error) => {
-        console.error(error);
+        this.$notify.error({
+          title: 'Error',
+          message: error,
+          type: 'error',
+        });
         this.loading = false;
       });
   },
@@ -71,12 +77,16 @@ export default {
     redirectToMovie(val) {
       this.$router.push({ name: 'movie', params: { id: this.getMovieId(val.url) } });
     },
-    checkIfIncludes(value, search) {
-      return value.toLowerCase().includes(search.toLowerCase());
-    },
   },
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
+  .home .hover-row {
+    cursor: pointer;
+  }
+  .home .el-input--mini {
+    display: flex;
+    width: 300px;
+  }
 </style>
