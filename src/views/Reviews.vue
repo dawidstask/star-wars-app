@@ -1,7 +1,7 @@
 <template>
   <div class="reviews">
     <h1>My reviews</h1>
-    <p>Currently you have {{ reviews.length }} reviews</p>
+    <p>Currently you have <b>{{ reviews.length }}</b> reviews</p>
     <table v-if="reviews.length">
       <tr>
         <th>Id</th>

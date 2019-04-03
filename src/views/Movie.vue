@@ -10,9 +10,14 @@
 
       <br>
       <p>Did you like the movie?</p>
-      <textarea v-model="review" placeholder="Leave a review..." rows="4" cols="50"></textarea>
+      <el-input
+        type="textarea"
+        placeholder="Leave a review..."
+        v-model="review"
+        :rows="4">
+      </el-input>
       <p>
-        <button @click="submitReview()">Submit</button>
+        <el-button @click="submitReview()">Submit</el-button>
       </p>
     </div>
     <p v-if="loading">Loading...</p>
@@ -20,13 +25,19 @@
 </template>
 
 <script>
+import { Input, Button, Notification } from 'element-ui';
+
 export default {
   name: 'Movie',
+  components: {
+    ElInput: Input,
+    ElButton: Button,
+  },
   data() {
     return {
       film: null,
       loading: false,
-      review: '',
+      review: null,
       movieId: this.$route.params.id,
     };
   },
@@ -45,6 +56,16 @@ export default {
   },
   methods: {
     submitReview() {
+      if (!this.review) {
+        return;
+      }
+
+      Notification.success({
+        title: 'Success',
+        message: 'Thanks for adding a review',
+        type: 'success',
+      });
+
       this.$store.commit(
         'addReview',
         {
