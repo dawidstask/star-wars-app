@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
+    <img alt="Star Wars logo" src="../assets/star-wars-logo.png">
     <MoviesTable/>
   </div>
 </template>
