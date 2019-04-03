@@ -12,7 +12,7 @@ export default new Vuex.Store({
   },
   mutations: {
     addReview(state, review) {
-      Vue.set(state, 'reviews', review);
+      state.reviews.push(review);
       console.log(this.state.reviews);
     },
   },

@@ -49,9 +49,11 @@ export default {
         'addReview',
         {
           movieId: this.movieId,
+          movieTitle: this.film.title,
           value: this.review,
         },
       );
+      this.review = '';
     },
   },
 };
