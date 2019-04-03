@@ -12,33 +12,25 @@
         <p>Opening crawl: <i>{{ film.opening_crawl }}</i></p>
       </div>
     </el-card>
-
     <template v-if="film">
-      <br>
-      <p>Did you like the movie?</p>
-      <el-input
-        type="textarea"
-        placeholder="Leave a review..."
-        v-model="review"
-        :rows="4">
-      </el-input>
-      <p>
-        <el-button @click="submitReview()">Submit</el-button>
-      </p>
+      <review-form :id="Number(movieId)" :title="film.title"></review-form>
     </template>
-
     <p v-if="loading">Loading...</p>
   </div>
 </template>
 
 <script>
+import ReviewForm from '@/components/ReviewForm.vue';
+
 export default {
   name: 'Movie',
+  components: {
+    ReviewForm,
+  },
   data() {
     return {
       film: null,
       loading: false,
-      review: null,
       movieId: this.$route.params.id,
     };
   },
@@ -58,29 +50,6 @@ export default {
         });
         this.loading = false;
       });
-  },
-  methods: {
-    submitReview() {
-      if (!this.review) {
-        return;
-      }
-
-      this.$notify.success({
-        title: 'Success',
-        message: 'Thanks for adding a review',
-        type: 'success',
-      });
-
-      this.$store.commit(
-        'addReview',
-        {
-          movieId: this.movieId,
-          movieTitle: this.film.title,
-          value: this.review,
-        },
-      );
-      this.review = '';
-    },
   },
 };
 </script>

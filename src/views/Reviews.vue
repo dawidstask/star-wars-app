@@ -1,6 +1,6 @@
 <template>
   <div class="reviews">
-    <h1>My reviews</h1>
+    <h1>Reviews</h1>
     <p>Currently you have <b>{{ reviews.length }}</b> reviews</p>
 
     <el-table v-if="reviews.length" :data="reviews">
