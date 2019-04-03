@@ -1,13 +1,31 @@
 <template>
   <div>
-    <table v-if="films">
-      <li v-for="film in films" :key="film.episode_id">
-        {{ film.title }}
-        <router-link :to="{ name: 'movie', params: { id: getMovieId(film.url) }}">
-          Movie
-        </router-link>
-      </li>
-    </table>
+    <template v-if="films">
+      <el-input
+        v-model="search"
+        size="mini"
+        placeholder="Type to search"/>
+
+      <el-table
+        :data="filterData"
+        highlight-current-row
+        @current-change="redirectToMovie">
+        <el-table-column
+          prop="title"
+          label="Title"
+          sortable>
+        </el-table-column>
+        <el-table-column
+          prop="director"
+          label="Director"
+          sortable>
+        </el-table-column>
+        <el-table-column
+          label="Actions">
+          Show more info
+        </el-table-column>
+      </el-table>
+    </template>
     <p v-if="loading">Loading...</p>
   </div>
 </template>
@@ -15,14 +33,23 @@
 <script>
 export default {
   name: 'MoviesTable',
-  props: {
-    msg: String,
-  },
   data() {
     return {
       films: null,
       loading: false,
+      search: '',
     };
+  },
+  computed: {
+    filterData: ({ films, checkIfIncludes, search }) => {
+      if (!films) {
+        return null;
+      }
+
+      return films.filter(data => !search
+        || checkIfIncludes(data.title, search)
+        || checkIfIncludes(data.director, search));
+    },
   },
   mounted() {
     this.loading = true;
@@ -40,6 +67,12 @@ export default {
   methods: {
     getMovieId(movieUrl) {
       return Number((/[0-9]/g).exec(movieUrl));
+    },
+    redirectToMovie(val) {
+      this.$router.push({ name: 'movie', params: { id: this.getMovieId(val.url) } });
+    },
+    checkIfIncludes(value, search) {
+      return value.toLowerCase().includes(search.toLowerCase());
     },
   },
 };

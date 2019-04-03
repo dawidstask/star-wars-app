@@ -25,14 +25,9 @@
 </template>
 
 <script>
-import { Input, Button, Notification } from 'element-ui';
 
 export default {
   name: 'Movie',
-  components: {
-    ElInput: Input,
-    ElButton: Button,
-  },
   data() {
     return {
       film: null,
@@ -60,7 +55,7 @@ export default {
         return;
       }
 
-      Notification.success({
+      this.$notify.success({
         title: 'Success',
         message: 'Thanks for adding a review',
         type: 'success',
