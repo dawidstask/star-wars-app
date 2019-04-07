@@ -1,4 +1,9 @@
-# star-wars-app
+# star wars app
+
+## About
+This is a star wars movie app working with [swapi](https://swapi.co/). The reviews added by a user goes to [vuex store](https://vuex.vuejs.org/).
+
+See [demo](https://dawidstask.github.io/star-wars-app/)
 
 ## Project setup
 ```
