@@ -8,10 +8,10 @@ export default new Vuex.Store({
     reviews: [],
   },
   getters: {
-    getReviews: state => state.reviews,
+    REVIEWS: state => state.reviews,
   },
   mutations: {
-    addReview(state, review) {
+    ADD_REVIEW(state, review) {
       state.reviews.push(review);
       console.log(this.state.reviews);
     },

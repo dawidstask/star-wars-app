@@ -23,7 +23,7 @@ export default {
   name: 'Reviews',
   computed: {
     ...mapGetters({
-      reviews: 'getReviews',
+      reviews: 'REVIEWS',
     }),
   },
 };

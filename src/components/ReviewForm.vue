@@ -36,7 +36,7 @@ export default {
       });
 
       this.$store.commit(
-        'addReview',
+        'ADD_REVIEW',
         {
           movieId: this.id,
           movieTitle: this.title,
